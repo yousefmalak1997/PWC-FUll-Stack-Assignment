@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Departments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" />
+</head>
+<body>
+
+    <section class="content-header" th:replace="navbar"></section>
+    <br>
+    <div class="container">
+        <table id="DepDetails" class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <th> Department Name </th>
+            <th> Department Description </th>
+            <th colspan="2"></th>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function(){
+            var settings = {
+                "url": "http://localhost:8080/departments",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                $.each(response, function(i, item) {
+                    var depDesc = response[i].depDesc;
+                    if ( depDesc == "" ) {
+                        depDesc = '-';
+                    }
+                    var edit_btn = "<a href='/editDep/"+response[i].id+"' class='btn btn-secondary btn-block'>Edit</a>";
+                    var delete_btn = "<a href='/departments/delete/"+response[i].id+"' class='btn btn-danger btn-block'>Delete</a>";
+                    var row = "<tr><td>" + response[i].depName + "</td><td>" + depDesc + "</td><td> " + edit_btn + "</td><td>" + delete_btn + " </td></tr>";
+                    $("#DepDetails").append(row);
+                });
+            });
+        });
+</script>

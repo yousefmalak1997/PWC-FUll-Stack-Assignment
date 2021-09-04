@@ -1,0 +1,22 @@
+<html lang="en" xmlns:th="http.thymeleaf.org">
+
+<form class="w-75 p-3" th:fragment="createEditDepForm">
+    <h4 id="FormTitle">Create Department:</h4>
+    <br>
+    <div style="padding-left:100px;">
+        <div class="form-group">
+            <label for="departmentName">Department Name:</label>
+            <input type="text" class="form-control" id="departmentName" name="depName" placeholder="Department Name" required >
+        </div>
+        <div class="form-group">
+            <label for="departmentDescription">Department Description:</label>
+            <textarea class="form-control" id="departmentDescription" name="depDesc" rows="4" ></textarea>
+        </div>
+        <div align="center" id="logErrors">
+            <p style="font-size: 20; color: #FF1C19;"></p>
+        </div>
+        <div class="form-group">
+            <button type="button" id="submit" class="btn btn-secondary btn-block" >Create Department</button>
+        </div>
+    </div>
+</form>

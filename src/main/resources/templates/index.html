@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Complaint Management Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+</head>
+<body>
+
+    <section class="content-header" th:replace="navbar"></section>
+
+    <div class="jumbotron text-center">
+        <h1>My Company</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Login to your account</h3>
+                <p>If you already have an account you can login to your account by this link.</p>
+                <p><a href="/login">Login</a></p>
+            </div>
+            <div class="col-sm-6">
+                <h3>Create Account</h3>
+                <p>if you don't have any account created before please create a new account.</p>
+                <p><a href="/register">Create Account</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

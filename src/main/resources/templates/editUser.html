@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" />
+</head>
+<body>
+
+    <section class="content-header" th:replace="navbar"></section>
+
+    <div class="container">
+        <br><br>
+
+        <form class="w-75 p-3">
+            <h4 id="FormTitle">Edit Info:</h4>
+            <br>
+            <div style="padding-left:100px;">
+                <div class="form-group">
+                    <label for="fName">First Name:</label>
+                    <input type="text" class="form-control" id="fName" name="firstName">
+                </div>
+                <div class="form-group">
+                    <label for="lName">Last Name:</label>
+                    <input type="text" class="form-control" id="lName" name="lastName">
+                </div>
+                <div class="form-group">
+                    <label for="uMail">Email:</label>
+                    <input type="text" class="form-control" id="uMail" name="email">
+                </div>
+                <div align="center" id="logErrors">
+                    <p style="font-size: 20; color: #FF1C19;"></p>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="submit" class="btn btn-secondary btn-block" >Edit Account</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <div class="col-9" style="padding-left:100px;">
+            <a th:href="@{'/user/delete/{id}'(id=${#authentication.getPrincipal().getId()})}" class="btn btn-danger btn-block">Delete Account</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $.urlParam = function(name){
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results==null) {
+           return null;
+        }
+        return decodeURI(results[1]) || 0;
+    }
+
+	$(document).ready(function(){
+	    var user_id = $.urlParam('userId');
+
+	    var settings = {
+            "url": "http://localhost:8080/departments",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+            },
+        };
+
+        $.ajax(settings).done(function (response) {
+            $.each(response, function(i, item) {
+                var option = "<option value='"+response[i].id+"'>"+response[i].depName+"</option>";
+                $("#DepList").append(option);
+            });
+        });
+
+        var settings = {
+            "url": "http://localhost:8080/user/getInfo/",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+            },
+        };
+
+        $.ajax(settings).done(function (response) {
+            $("input[name='firstName']").val(response.firstName);
+            $("input[name='lastName']").val(response.lastName);
+            $("input[name='email']").val(response.email);
+        });
+
+         $('#submit').click(function(event){
+            var first_name = $("input[name='firstName']").val();
+            var last_name = $("input[name='lastName']").val();
+            var u_email = $("input[name='email']").val();
+
+            var settings = {
+                "url": "http://localhost:8080/user/editInfo",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({"firstName":first_name,"lastName":last_name,"email":u_email}),
+            };
+
+             $.ajax(settings).done(function (response) {
+                console.log(response);
+                switch(response) {
+                    case "fillReqFields":
+                        $( "#logErrors P" ).remove();
+                        $( "#logErrors" ).append( "<p style='font-size: 20; color: #FF1C19;'>Please Make Sure to Enter All Fields</p>" );
+                        break;
+                    case "notValidEmail":
+                        $( "#logErrors P" ).remove();
+                        $( "#logErrors" ).append( "<p style='font-size: 20; color: #FF1C19;'>Invalid Email</p>" );
+                        break;
+                    case "emailAlreadyUsed":
+                        $( "#logErrors P" ).remove();
+                        $( "#logErrors" ).append( "<p style='font-size: 20; color: #FF1C19;'>Email Already Used</p>" );
+                        break;
+                    default:
+                        window.location.href = 'http://localhost:8080/home';
+                }
+            });
+         });
+
+	});
+</script>
+
+
+<!--private Long id;-->
+<!--private String firstName;-->
+<!--private String lastName;-->
+<!--private String email;-->
+<!--private String password;-->
+<!--private UsersRole userRole;-->
+<!--private Long departmentsId;-->
